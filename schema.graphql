@@ -1,0 +1,74 @@
+# A users vote for a modification
+type Vote {
+  # Internal ID
+  id: ID!
+  user: User!
+  date: DateTime!
+  # What did (s)he vote?  approve, reject, abstain?
+  vote: String!
+  # An additional comment, to explain the vote.  E. g. a user might vote abstain, but provide some information why...
+  reason: String
+}
+
+# A modification describes modifications to an entry in such a way that they can be applied and rolled back.  Preferable
+# This could be as simple as:
+# modify attribute_name old_value new_value => modify name 'Capella' 'Capella Flavors'
+# add type ID => add URL 1234
+# rm type ID => rm URL 1234
+# ...
+type Modification {
+  # Internal ID
+  id: ID!
+  # Text describing the modification, see above foo examples
+  modification: String!
+  user: User!
+  date: DateTime!
+  # Why should other users approve of this?  Could be just an URL to a site backing up the claim.
+  # FIXME: naming
+  plea: String!
+  # Is this modification applied / approved?
+  is_applied: Boolean!
+  # Has it been canceled?
+  is_canceled: Boolean!
+  # If it has been canceled, here's the reason why: rejected by community, rejected by admin, rejected by antispambot, canceled by user...
+  cancel_reason: String
+  # For modifications that can not be applied directly (e. g. renaming a vendor or concentrate) it's possible for other users to vote on this modification
+  votes: [Vote]
+}
+
+# URL linking to a company site, external review, ...
+type URL {
+  # Internal ID
+  id: ID!
+  # Uniform resource locator
+  url: String!
+  # Text describing the content found at the URL in more detail
+  description: String
+  # Type of the URL: company, flavor, shop, review...
+  # FIXME:  Do we need this?
+  # FIXME:  Should this be a hard coded or...
+  type: URLType!
+  # Has this URL been approved?
+  is_approved: Boolean!
+  # Has this URL pedning modifications?
+  has_pending_mods: Boolean!
+  # In what language(s) is the content this URL is pointing too?
+  iso_lang: [String]!
+  # List of pending, applied and rejected modifications to this entry
+  modifications: [Modification]
+}
+
+# Vendor aka company producing flavor concentrates
+type Vendor {
+  # Internal ID
+  id: ID!
+  # Official name of the company: Capella® Flavors, flavorah ...
+  name: String!
+  # Abbreviation for this company: CAP, FLV ...
+  abbreviation: String!
+  # List of URLs in relation to this vendor: company site, reviews, shop links
+  urls: [URL]
+  # FIXME: What additional info do we want here?  Founded date, headquarter location?  I'd suggest we keep this as basic as possible.
+  # List of pending, applied and rejected modifications to this entry
+  modifications: [Modification]
+}
