@@ -2,7 +2,6 @@
 
 # A user
 type User {
-  # Internal ID
   id: ID!
   name: String!
   # everything this user did...
@@ -16,7 +15,6 @@ type User {
 
 # A users vote for a modification
 type Vote {
-  # Internal ID
   id: ID!
   user: User!
   date: DateTime!
@@ -34,7 +32,6 @@ type Vote {
 # rm type ID => rm URL 1234
 # ...
 type Modification {
-  # Internal ID
   id: ID!
   # Text describing the modification, see above foo examples
   modification: String!
@@ -55,7 +52,6 @@ type Modification {
 
 # URL linking to a company site, external review, ...
 type URL {
-  # Internal ID
   id: ID!
   # Uniform resource locator
   url: String!
@@ -77,7 +73,6 @@ type URL {
 
 # Vendor aka company producing flavor concentrates
 type Vendor {
-  # Internal ID
   id: ID!
   # Official name of the company: Capella® Flavors, flavorah ...
   name: String!
@@ -88,6 +83,40 @@ type Vendor {
   # FIXME: What additional info do we want here?  Founded date, headquarter location?  I'd suggest we keep this as basic as possible.
   # List of pending, applied and rejected modifications to this entry
   modifications: [Modification]
+  # List of concentrates of this vendor
+  concentrates: [concentrate]
+  # FIXME: not sure if we want tags here
+  tags: [Tag]
+  reviews: [Review]
+  ratings: [Rating]
+}
+
+# Concentrate aka flavor
+type Concentrate {
+  id: ID!
+  # Official name of the concentrate
+  name: String!
+  # List of aliases this concentrate is also known for
+  # Maybe catch common typos / misnomas here?
+  aliases: [String]
+  # Density of the concentrate ml/mg
+  density: Float
+  # Number of recipes this concentrate is used in
+  nr_of_recipes: Int!
+  # Average percentage it's used in these recipes
+  avg_percentage: Float!
+  # Suggested percentage if this is used as single flavor
+  # FIXME: this is debatable, so there are probably more than one suggestion here.  we could make this an extra type Percentage with user attribute etc. pp.
+  single_percentage: Float!
+  # Suggested percentage in a mix
+  mix_percentage: Float!
+  tags: [Tag]
+  reviews: [Review]
+  ratings: [Rating]
+  # A list of concentrates related to this one.  Be it because they are used together in mixes, are liked by the same users ...
+  related_concentrates: [Concentrate]
+  # Kind of the same of the above, but with more of a users context.  Maybe filtered by what's in the users stash or what might be a good fit based on the recipes the user likes...
+  suggested_concentrates: [Concentrate]
 }
 
 # incomplete, please add stuff
