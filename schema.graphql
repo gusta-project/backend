@@ -1,3 +1,5 @@
+# GraphQL schema describing everything the API exposes
+
 # A user
 type User {
   # Internal ID
@@ -11,6 +13,7 @@ type User {
   reviews: [Review]
   comments: [Comment]
 }
+
 # A users vote for a modification
 type Vote {
   # Internal ID
@@ -86,3 +89,5 @@ type Vendor {
   # List of pending, applied and rejected modifications to this entry
   modifications: [Modification]
 }
+
+# incomplete, please add stuff
