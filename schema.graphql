@@ -1,16 +1,30 @@
+# A user
+type User {
+  # Internal ID
+  id: ID!
+  name: String!
+  # everything this user did...
+  votes: [Vote]
+  modifications: [Modification]
+  recipes: [Recipe]
+  stash: [StashItem]
+  reviews: [Review]
+  comments: [Comment]
+}
 # A users vote for a modification
 type Vote {
   # Internal ID
   id: ID!
   user: User!
   date: DateTime!
-  # What did (s)he vote?  approve, reject, abstain?
+  # What is the users vote?  approve, reject, abstain?
+  # FIXME: could be Boolean and allow nulls == abstain?
   vote: String!
   # An additional comment, to explain the vote.  E. g. a user might vote abstain, but provide some information why...
   reason: String
 }
 
-# A modification describes modifications to an entry in such a way that they can be applied and rolled back.  Preferable
+# A modification describes modifications to an entry in such a way that they can be applied and rolled back.
 # This could be as simple as:
 # modify attribute_name old_value new_value => modify name 'Capella' 'Capella Flavors'
 # add type ID => add URL 1234
